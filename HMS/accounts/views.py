@@ -2,9 +2,27 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 
-from .forms import PatientForm
+from .forms import PatientForm, CreateUserForm
+
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 # Create your views here.
+
+def registerPage(request):
+    form= CreateUserForm()
+
+    if request.method =='POST':
+        form=UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user=form.cleaned_data.get('username')#To get the username created
+            messages.success(request,'Account was created for '+ user)#Message to pop up when registered
+
+            return redirect('login')
+
+    context={'form':form}
+    return render(request,'accounts/register.html',context)
 
 
 def patient (request,pk):
