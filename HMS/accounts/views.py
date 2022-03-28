@@ -8,6 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -50,7 +51,7 @@ def logoutUser (request):
     logout(request)
     return redirect('login')
 
-
+@login_required(login_url='login')
 def patient (request,pk):
     patient=Patient.objects.get(id=pk)
     appointments=patient.order_set.all()
@@ -60,7 +61,7 @@ def patient (request,pk):
              'appointment_count':appointment_count}
     return render(request,'accounts/patient.html',context)
 
-
+@login_required(login_url='login')
 def createPatient (request):
 # To render the patient form and edit on it
     form=PatientForm()
