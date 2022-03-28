@@ -11,7 +11,7 @@
 		<h5>PATIENTS:</h5>
 		<hr>
 		<div class="card card-body">
-			<a class="btn btn-primary  btn-sm btn-block" href="">Create Customer</a>
+			<a class="btn btn-primary  btn-sm btn-block" href="">Create Patient</a>
 			<table class="table table-sm">
 				<tr>
 					<th></th>
@@ -21,7 +21,7 @@
 
 				{% for patient in patients %}
 					<tr>
-						<td><a class="btn btn-sm btn-info" href="{% url 'customer' customer.id %}">View</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'patient' patient.id %}">View</a></td>
 						<td>{{patient.name}}</td>
 						<td>{{patient.phone}}</td>
 					</tr>
@@ -47,12 +47,12 @@
 
 				{% for appointment in appointments %}
 					<tr>
-						<td>{{order.product}}</td>
-						<td>{{order.date_created}}</td>
-						<td>{{order.status}}</td>
-						<td><a class="btn btn-sm btn-info" href="{% url 'update_order' order.id %}">Update</a></td>
+						<td>{{appointment.patient}}</td>
+						<td>{{appointment.date_created}}</td>
+						<td>{{appointment.status}}</td>
+						<td><a class="btn btn-sm btn-info" href="">Update</a></td>
 
-						<td><a class="btn btn-sm btn-danger" href="{% url 'delete_order' order.id %}">Delete</a></td>
+						<td><a class="btn btn-sm btn-danger" href="">Delete</a></td>
 
 					</tr>
 				{% endfor %}

@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 
 def registerPage(request):
     form = CreateUserForm()
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return redirect('home')
     else:
         if request.method == 'POST':
@@ -33,7 +33,7 @@ def registerPage(request):
 
 def loginPage(request):
     # Login function to get in the system
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return redirect('home')
     else:
         if request.method == 'POST':
@@ -59,22 +59,22 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
+
 @login_required(login_url='login')
 def home(request):
-	appointments = Appointment.objects.all()
-	patients = Patient.objects.all()
+    appointments = Appointment.objects.all()
+    patients = Patient.objects.all()
 
-	total_patients = patients.count()
+    total_patients = patients.count()
 
-	total_appointmets = appointments.count()
+    total_appointments = appointments.filter(status='Booked').count()
 
-	pending = appointments.filter(status='Pending').count()
+    pending = appointments.filter(status='Waiting').count()
 
-	context = {'appointments':appointments, 'patients':patients,
-	'total_appointmets':total_appointmets,'pending':pending }
+    context = {'appointments': appointments, 'patients': patients,
+               'total_appointments': total_appointments, 'pending': pending}
 
-	return render(request, 'accounts/dashboard.html', context)
-
+    return render(request, 'accounts/dashboard.html', context)
 
 
 @login_required(login_url='login')
