@@ -27,21 +27,28 @@ def registerPage(request):
     return render(request,'accounts/register.html',context)
 
 def loginPage(request):
-
+#Login function to get in the system
     if request.method=='POST':
         username=request.POST.get('username')
         password=request.POST.get('password')
 
         user=authenticate(request,username=username,password=password)
 
+            #Making sure that the user is registered and correct
         if user is not None:
             login(request,user)
             return redirect('home')
+            #If the information was incorrect a message will show that
         else:
             messages.info(request,'Username or Password is incorrect')
 
     context={}
     return render(request,'accounts/login.html',context)
+
+def logoutUser (request):
+#Logout function that redirects the user to the login page
+    logout(request)
+    return redirect('login')
 
 
 def patient (request,pk):
