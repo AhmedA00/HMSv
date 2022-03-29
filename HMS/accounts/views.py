@@ -80,7 +80,7 @@ def home(request):
 @login_required(login_url='login')
 def patient(request, pk):
     patient = Patient.objects.get(id=pk)
-    appointments = patient.order_set.all()
+    appointments = patient.appointment_set.all()
     appointment_count = appointments.count
 
     context = {'patient': patient, 'appointments': appointments,

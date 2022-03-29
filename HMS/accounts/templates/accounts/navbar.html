@@ -2,11 +2,10 @@
 
 <style>
   .hello-msg{
-  font-size:18px;
-  color: #fff;
-  margin-right: 20px;
+    font-size: 18px;
+    color: #fff;
+    margin-right: 20px;
   }
-
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -19,10 +18,10 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Patients</a>
+        <a class="nav-link" href="">Patients</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Doctors</a>
@@ -36,6 +35,6 @@
     </ul>
   </div>
 
-  <span id="hello-msg">Hello,{{request.user}}</span>
+  <span class="hello-msg">Hello,{{request.user}}</span>
   <span><a class="hello-msg" href="{%url 'logout'%}">Logout</a></span>
 </nav>

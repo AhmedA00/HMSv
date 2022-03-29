@@ -19,6 +19,7 @@
 		<div class="card card-body">
 			<h5>Contact Information</h5>
 			<hr>
+			<p>Name:{{patient.name}} </p>
 			<p>Email:{{patient.email}} </p>
 			<p>Phone:{{patient.phone}} </p>
 		</div>
@@ -64,7 +65,7 @@
 				{% for appointment in appointments %}
 				<tr>
 					<td>{{appointment.doctor}}</td>
-					<td>{{appointment.appointment.section}}</td>
+					<td>{{appointment.doctor.section}}</td>
 					<td>{{appointment.date_created}}</td>
 					<td>{{appointment.status}}</td>
 					<td><a class="btn btn-sm btn-info" href="">Update</a></td>
