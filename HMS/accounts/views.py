@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 
-from .forms import PatientForm, CreateUserForm
+from .forms import AppointmentForm, CreateUserForm
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -67,7 +67,7 @@ def home(request):
 
     total_patients = patients.count()
 
-    total_appointments = appointments.filter(status='Booked').count()
+    total_appointments = Appointment.objects.all().count()
 
     pending = appointments.filter(status='Waiting').count()
 
@@ -87,11 +87,48 @@ def patient(request, pk):
                'appointment_count': appointment_count}
     return render(request, 'accounts/patient.html', context)
 
+@login_required(login_url='login')
+def doctor(request):
+    # doctor = Doctor.objects.get(id=pk)
+    doctor = Doctor.objects.all()
+
+    # appointments = Appointment.objects.filter(doctor=doctor)
+    # appointment_count = appointments.count
+
+    # context = {'doctor': doctor, 'appointments': appointments,
+    #            'appointment_count': appointment_count},
+    context = {'doctor': doctor}
+    return render(request, 'accounts/doctor.html', context)
 
 @login_required(login_url='login')
-def createPatient(request):
-    # To render the patient form and edit on it
-    form = PatientForm()
+def updateDoctor(request, pk):
+    doctor = Doctor.objects.get(id=pk)
+
+    appointments = Appointment.objects.filter(doctor=doctor)
+    appointment_count = appointments.count
+
+    context = {'doctor': doctor, 'appointments': appointments,
+               'appointment_count': appointment_count}
+
+    return render(request, 'accounts/doctor_form.html', context)
+
+
+
+@login_required(login_url='login')
+def createAppointment(request):
+    # To render the appointment form and edit on it
+    form = AppointmentForm()
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
 
     context = {'form': form}
-    return render(request, 'accounts/patient_form', context)
+    return render(request, 'accounts/appointment_form.html', context)
+
+@login_required(login_url='login')
+def updateAppointment(request, pk):
+    form = AppointmentForm()
+    context = {'form': form}
+    return render(request, 'accounts/appointment_form.html', context)

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from .models import Appointment
 
-class PatientForm (ModelForm):
+class AppointmentForm (ModelForm):
     class Meta :
         model= Appointment
         fields='__all__'
