@@ -27,7 +27,7 @@
 
 	<div class="col-md">
 		<div class="card card-body">
-			<h5>Total Visits</h5>
+			<h5>Total Appointments</h5>
 			<hr>
 			<h1 style="text-align: center;padding: 10px">{{appointment_count}}</h1>
 		</div>
@@ -64,7 +64,7 @@
 
 				{% for appointment in appointments %}
 				<tr>
-					<td>{{appointment.doctor}}</td>
+					<td>{{appointment.patient}}</td>
 					<td>{{appointment.doctor.section}}</td>
 					<td>{{appointment.date_created}}</td>
 					<td>{{appointment.status}}</td>

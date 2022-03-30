@@ -15,19 +15,11 @@
 		</div>
 	</div>
 
-	<div class="col-md">
-		<div class="card card-body">
-			<h5>Contact Information</h5>
-			<hr>
-			<p>Name: </p>
-			<p>Email: </p>
-			<p>Phone: </p>
-		</div>
-	</div>
+
 
 	<div class="col-md">
 		<div class="card card-body">
-			<h5>Total Visits</h5>
+			<h5>Total Appointment</h5>
 			<hr>
 			<h1 style="text-align: center;padding: 10px"></h1>
 		</div>
@@ -62,7 +54,7 @@
 					<th>Remove</th>
 				</tr>
 
-				{% for doctor in appointments %}
+				{% for appointment in appointments %}
 				<tr>
 					<td>{{appointment.doctor}}</td>
 					<td>{{appointment.doctor.section}}</td>
