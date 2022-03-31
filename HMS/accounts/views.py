@@ -25,7 +25,7 @@ def registerPage(request):
             user = form.save()
             username = form.cleaned_data.get('username')
 
-            group = Group.objects.get(name='customer')
+            group = Group.objects.get(name='patient')
             user.groups.add(group)
 
             messages.success(request, 'Account was created for ' + username)
@@ -61,6 +61,10 @@ def logoutUser(request):
     # Logout function that redirects the user to the login page
     logout(request)
     return redirect('login')
+
+def userPage(request):
+	context = {}
+	return render(request, 'accounts/user.html', context)
 
 
 @login_required(login_url='login')
