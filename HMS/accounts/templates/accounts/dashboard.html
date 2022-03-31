@@ -53,7 +53,7 @@
 						<td>{{appointment.status}}</td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'update_appointments' appointment.id %}">Update</a></td>
 
-						<td><a class="btn btn-sm btn-danger" href="{% url 'delete_appointments' appointment.id %}">Delete</a></td>
+						<td><a class="btn btn-sm btn-danger" href="{% url 'delete_appointment' appointment.id %}">Delete</a></td>
 
 					</tr>
 				{% endfor %}

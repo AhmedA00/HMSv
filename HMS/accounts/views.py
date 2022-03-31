@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 
-from .forms import AppointmentForm, CreateUserForm
+from .forms import AppointmentForm, CreateUserForm, LabForm
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -92,16 +92,45 @@ def lab(request):
     return render(request, 'accounts/lab.html')
 
 
+def createLab(request):
+    # To render the appointment form and edit on it
+    lab = Lab.objects.all()
+    form = LabForm()
+
+    if request.method == 'POST':
+        form = LabForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {'form': form}
+    return render(request, 'accounts/lab_form.html', context)
+
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def patient(request, pk):
     patient = Patient.objects.get(id=pk)
     appointments = patient.appointment_set.all()
     appointment_count = appointments.count
+    lab = Lab.objects.all()
 
     context = {'patient': patient, 'appointments': appointments,
-               'appointment_count': appointment_count}
+               'appointment_count': appointment_count, 'lab': lab}
     return render(request, 'accounts/patient.html', context)
+
+def patientHome(request):
+    appointments = Appointment.objects.all()
+    patient = Patient.objects.all()
+    appointment_count = appointments.count
+
+    context={'patient':patient,'appointments':appointments,'appointment_count':appointment_count}
+    return render(request,'accounts/patientHome.html',context)
+
+def createPatient(request):
+    createpatient = Patient(
+        email=info["email"], name=info["name"], phone=info["phone"])
+    createpatient.save()
 
 
 @login_required(login_url='login')
@@ -136,7 +165,7 @@ def updateDoctor(request, pk):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
-def createAppointment(request,pk):
+def createAppointment(request, pk):
     # To render the appointment form and edit on it
     appointment = Appointment.objects.get(id=pk)
     form = AppointmentForm()
@@ -154,22 +183,23 @@ def createAppointment(request,pk):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def updateAppointment(request, pk):
-
-    appointment=Appointment.objects.get(id=pk)
+    appointment = Appointment.objects.get(id=pk)
     form = AppointmentForm(instance=appointment)
 
-    if request.method =='POST':
-        form=AppointmentForm(request.POST,instance=appointment)
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST, instance=appointment)
         if form.is_valid():
             form.save()
             return redirect('/')
     context = {'form': form}
     return render(request, 'accounts/appointment_form.html', context)
-def deleteAppointment(request,pk):
-    appointment=Appointment.objects.get(id=pk)
-    if request.method=="POST":
+
+
+def deleteAppointment(request, pk):
+    appointment = Appointment.objects.get(id=pk)
+    if request.method == "POST":
         appointment.delete()
         return redirect('/')
 
-    context={'item':appointment}
-    return render(request,'accounts/delete_form.html',context)
+    context = {'item': appointment}
+    return render(request, 'accounts/delete_form.html', context)
