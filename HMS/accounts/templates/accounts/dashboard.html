@@ -36,7 +36,7 @@
 		<h5>LAST 5 APPOINTMENTS</h5>
 		<hr>
 		<div class="card card-body">
-			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'create_appointment' %}">Create Appointment</a>
+
 			<table class="table table-sm">
 				<tr>
 					<th>Product</th>
@@ -51,9 +51,9 @@
 						<td>{{appointment.patient}}</td>
 						<td>{{appointment.date_created}}</td>
 						<td>{{appointment.status}}</td>
-						<td><a class="btn btn-sm btn-info" href="">Update</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'update_appointments' appointment.id %}">Update</a></td>
 
-						<td><a class="btn btn-sm btn-danger" href="">Delete</a></td>
+						<td><a class="btn btn-sm btn-danger" href="{% url 'delete_appointments' appointment.id %}">Delete</a></td>
 
 					</tr>
 				{% endfor %}

@@ -4,7 +4,8 @@ from .import views
 urlpatterns = [
     path('', views.home, name="home"),
 
-    path('create_appointments/', views.createAppointment, name="create_appointment"),
+    path('delete_appointment/<str:pk>/',views.deleteAppointment,name="delete_appointment"),
+    path('create_appointments/<str:pk>/', views.createAppointment, name="create_appointments"),
     path('update_appointments/<str:pk>/', views.updateAppointment, name="update_appointments"),
 
     path('patient/<str:pk>/', views.patient, name="patient"),

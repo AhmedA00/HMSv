@@ -10,14 +10,13 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from .decorators import unauthenticated_user,allowed_users,admin_only
+from .decorators import unauthenticated_user, allowed_users, admin_only
 
 
 # Create your views here.
 
 @unauthenticated_user
 def registerPage(request):
-
     form = CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -34,6 +33,7 @@ def registerPage(request):
 
     context = {'form': form}
     return render(request, 'accounts/register.html', context)
+
 
 @unauthenticated_user
 def loginPage(request):
@@ -62,9 +62,10 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
+
 def userPage(request):
-	context = {}
-	return render(request, 'accounts/user.html', context)
+    context = {}
+    return render(request, 'accounts/user.html', context)
 
 
 @login_required(login_url='login')
@@ -84,11 +85,11 @@ def home(request):
 
     return render(request, 'accounts/dashboard.html', context)
 
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def lab(request):
-
-    return render(request,'accounts/lab.html')
+    return render(request, 'accounts/lab.html')
 
 
 @login_required(login_url='login')
@@ -110,12 +111,12 @@ def doctor(request):
     appointments = Appointment.objects.all()
     doctor = Doctor.objects.all()
 
-    #appointments = Appointment.objects.filter(doctor=doctor)
+    # appointments = Appointment.objects.filter(doctor=doctor)
     # appointment_count = appointments.count
 
     # context = {'doctor': doctor, 'appointments': appointments,
     #            'appointment_count': appointment_count},
-    context = {'doctor': doctor,'appointments':appointments}
+    context = {'doctor': doctor, 'appointments': appointments}
     return render(request, 'accounts/doctor.html', context)
 
 
@@ -135,9 +136,11 @@ def updateDoctor(request, pk):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
-def createAppointment(request):
+def createAppointment(request,pk):
     # To render the appointment form and edit on it
+    appointment = Appointment.objects.get(id=pk)
     form = AppointmentForm()
+
     if request.method == 'POST':
         form = AppointmentForm(request.POST)
         if form.is_valid():
@@ -151,6 +154,22 @@ def createAppointment(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def updateAppointment(request, pk):
-    form = AppointmentForm()
+
+    appointment=Appointment.objects.get(id=pk)
+    form = AppointmentForm(instance=appointment)
+
+    if request.method =='POST':
+        form=AppointmentForm(request.POST,instance=appointment)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
     context = {'form': form}
     return render(request, 'accounts/appointment_form.html', context)
+def deleteAppointment(request,pk):
+    appointment=Appointment.objects.get(id=pk)
+    if request.method=="POST":
+        appointment.delete()
+        return redirect('/')
+
+    context={'item':appointment}
+    return render(request,'accounts/delete_form.html',context)

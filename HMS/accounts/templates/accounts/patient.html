@@ -10,7 +10,8 @@
 			<h5>Customer:</h5>
 			<hr>
 			<a class="btn btn-outline-info  btn-sm btn-block" href="">Update Patient</a>
-			<a class="btn btn-outline-danger  btn-sm btn-block" href="">Delete Patient</a>
+			<a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'create_appointments' patient.id %}">Add  Appointment</a>
+
 
 		</div>
 	</div>
@@ -68,8 +69,9 @@
 					<td>{{appointment.doctor.section}}</td>
 					<td>{{appointment.date_created}}</td>
 					<td>{{appointment.status}}</td>
-					<td><a class="btn btn-sm btn-info" href="">Update</a></td>
-					<td><a class="btn btn-sm btn-danger" href="">Remove</a></td>
+					<td><a class="btn btn-sm btn-info" href="{% url 'update_appointments' appointment.id %}">Update</a></td>
+
+					<td><a class="btn btn-sm btn-danger" href="{% url 'delete_appointment' appointment.id %}">Delete</a></td>
 
 				</tr>
 				{% endfor %}
