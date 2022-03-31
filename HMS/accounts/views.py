@@ -9,22 +9,26 @@ from django.contrib import messages
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .decorators import unauthenticated_user
+from django.contrib.auth.models import Group
+from .decorators import unauthenticated_user,allowed_users,admin_only
 
 
 # Create your views here.
 
 @unauthenticated_user
 def registerPage(request):
+
     form = CreateUserForm()
-
-
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('username')  # To get the username created
-            messages.success(request, 'Account was created for ' + user)  # Message to pop up when registered
+            user = form.save()
+            username = form.cleaned_data.get('username')
+
+            group = Group.objects.get(name='customer')
+            user.groups.add(group)
+
+            messages.success(request, 'Account was created for ' + username)
 
             return redirect('login')
 
@@ -60,6 +64,7 @@ def logoutUser(request):
 
 
 @login_required(login_url='login')
+@admin_only
 def home(request):
     appointments = Appointment.objects.all()
     patients = Patient.objects.all()
@@ -75,8 +80,15 @@ def home(request):
 
     return render(request, 'accounts/dashboard.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def lab(request):
+
+    return render(request,'accounts/lab.html')
+
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def patient(request, pk):
     patient = Patient.objects.get(id=pk)
     appointments = patient.appointment_set.all()
@@ -88,6 +100,7 @@ def patient(request, pk):
 
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def doctor(request):
     # doctor = Doctor.objects.get(id=pk)
     appointments = Appointment.objects.all()
@@ -103,6 +116,7 @@ def doctor(request):
 
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def updateDoctor(request, pk):
     doctor = Doctor.objects.get(id=pk)
 
@@ -116,6 +130,7 @@ def updateDoctor(request, pk):
 
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def createAppointment(request):
     # To render the appointment form and edit on it
     form = AppointmentForm()
@@ -130,6 +145,7 @@ def createAppointment(request):
 
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def updateAppointment(request, pk):
     form = AppointmentForm()
     context = {'form': form}

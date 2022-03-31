@@ -43,11 +43,16 @@ class Lab(models.Model):
         ('CREATINE', 'CREATINE'),
         ('VITAMINS', 'VITAMINS'),
         ('PREGNANCY', 'PREGNANCY'),
+        ('COVID', 'COVID'),
+        ('BLOOD', 'BLOOD'),
+        ('X-RAY', 'X-RAY')
 
     )
     receipt = models.CharField(max_length=200, null=True, choices=TEST)
     patient = models.ForeignKey(Patient, null=True, on_delete=models.SET_NULL)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+
 
 
 class Pharmacy(models.Model):

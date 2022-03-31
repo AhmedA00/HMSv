@@ -11,6 +11,8 @@ urlpatterns = [
     path('doctor/',views.doctor,name="doctor"),
     path('doctor_form/<str:pk>/',views.updateDoctor,name="doctor_form"),
 
+    path('lab/',views.lab),
+
     path('register/', views.registerPage, name="register"),
     path('login/', views.loginPage, name="login"),
     path('logout/', views.logoutUser, name="logout")
