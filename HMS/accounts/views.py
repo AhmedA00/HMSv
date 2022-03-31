@@ -168,7 +168,7 @@ def updateDoctor(request, pk):
 def createAppointment(request, pk):
     # To render the appointment form and edit on it
     appointment = Appointment.objects.get(id=pk)
-    form = AppointmentForm()
+    form = AppointmentForm(initial={'patient':patient})
 
     if request.method == 'POST':
         form = AppointmentForm(request.POST)
